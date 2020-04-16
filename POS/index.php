@@ -80,7 +80,7 @@
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
-
+    <?php require 'php/variables.php'; ?>
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
@@ -90,7 +90,7 @@
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
-                <h3>999</h3>
+                <h3><?php echo $totalVentas; ?></h3>
                 <p>Ventas realizadas</p>
               </div>
               <div class="icon">
@@ -104,7 +104,7 @@
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
-                <h3>999</h3>
+                <h3><?php echo $totalCategorias; ?></h3>
                 <p>Categorías</p>
               </div>
               <div class="icon">
@@ -118,7 +118,7 @@
             <!-- small box -->
             <div class="small-box bg-warning">
               <div class="inner">
-                <h3>999</h3>
+                <h3><?php echo $totalClientes; ?></h3>
                 <p>Clientes </p>
               </div>
               <div class="icon">
@@ -132,7 +132,7 @@
             <!-- small box -->
             <div class="small-box bg-danger">
               <div class="inner">
-                <h3>999</h3>
+                <h3><?php echo $totalProductos; ?></h3>
                 <p>Productos</p>
               </div>
               <div class="icon">
@@ -152,8 +152,8 @@
               <span class="info-box-icon bg-info elevation-1"><i class="fas fa-dollar-sign"></i></span>
 
               <div class="info-box-content">
-                <span class="info-box-text">Ganancias actuales</span>
-                <span class="info-box-number"><?php echo '$ ' . number_format(1234567) ?></span>
+                <span class="info-box-text">Ganancias estimadas</span>
+                <span class="info-box-number"><?php echo $gananciasEstimadas; ?></span>
               </div>
               <!-- /.info-box-content -->
             </div>
@@ -170,7 +170,7 @@
 
               <div class="info-box-content">
                 <span class="info-box-text">Inversión por compras</span>
-                <span class="info-box-number"><?php echo '$ ' . number_format(1234567) ?></span>
+                <span class="info-box-number"><?php echo $totalCompras; ?></span>
               </div>
               <!-- /.info-box-content -->
             </div>
@@ -183,7 +183,7 @@
 
               <div class="info-box-content">
                 <span class="info-box-text">Usuarios</span>
-                <span class="info-box-number">999</span>
+                <span class="info-box-number"><?php echo $totalUsuarios; ?></span>
               </div>
               <!-- /.info-box-content -->
             </div>
@@ -197,7 +197,7 @@
 
               <div class="info-box-content">
                 <span class="info-box-text">Proveedores</span>
-                <span class="info-box-number">999</span>
+                <span class="info-box-number"><?php echo $totalProveedores; ?></span>
               </div>
               <!-- /.info-box-content -->
             </div>
@@ -211,24 +211,27 @@
         <div class="row">
           <!-- Left col -->
           <section class="col-lg-6 connectedSortable">
-            <div class="card">
+            <?php include 'php/calcular-valor-ventas.php'; ?>
+            <?php 
+            $result = $mysqli->query("SELECT total_venta FROM movimientos WHERE motivo='venta'");
+            $total = 0;
+            if(mysqli_num_rows($result) > 0) {
+              while($row = mysqli_fetch_assoc($result)){
+                $total += $row['total_venta'];
+              }
+            } ?>
+            <div class="card mt-4">
               <div class="card-header border-0">
                 <div class="d-flex justify-content-between">
-                  <h3 class="card-title">Sales</h3>
+                  <h3 class="card-title">Histórico de ventas</h3>
                   <a href="javascript:void(0);">View Report</a>
                 </div>
-              </div> <!-- ./ Header -->
+              </div>
               <div class="card-body">
                 <div class="d-flex">
                   <p class="d-flex flex-column">
-                    <span class="text-bold text-lg">$18,230.00</span>
-                    <span>Sales Over Time</span>
-                  </p>
-                  <p class="ml-auto d-flex flex-column text-right">
-                    <span class="text-success">
-                      <i class="fas fa-arrow-up"></i> 33.1%
-                    </span>
-                    <span class="text-muted">Since last month</span>
+                    <span class="text-bold text-lg"><?php echo $total; ?></span>
+                    <span>Total por ventas</span>
                   </p>
                 </div>
                 <!-- /.d-flex -->
@@ -238,24 +241,75 @@
                 </div>
 
                 <div class="d-flex flex-row justify-content-end">
-                  <span class="mr-2">
-                    <i class="fas fa-square text-primary"></i> This year
-                  </span>
-
-                  <span>
-                    <i class="fas fa-square text-gray"></i> Last year
+                  <span class="mr-4">
+                    <i class="fas fa-square" style="color: rgb(0, 99, 132);"></i> Ventas por mes
                   </span>
                 </div>
-              </div> <!-- ./ Body -->
+              </div>
             </div>
             <!-- /.card -->
-
           </section>
           <!-- /.Left col -->
 
           <!-- right col (We are only adding the ID to make the widgets sortable)-->
           <section class="col-lg-6 connectedSortable">
+            <!-- TABLE: LATEST ORDERS -->
+            <div class="card mt-4">
+              <div class="card-header border-transparent">
+                <h3 class="card-title">
+                  <i class="ion ion-clipboard mr-2"></i>
+                  Productos añadidos recientemente
+                </h3>
 
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body p-0">
+                <div class="table-responsive table-bordered">
+                  <table class="table m-0">
+                    <thead>
+                    <tr>
+                      <th class="text-center">Producto</th>
+                      <th class="text-center">Stock</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php 
+                    $query = "SELECT id, nombre_producto, stock FROM productos ORDER BY id DESC LIMIT 10";
+                    $result = $mysqli->query($query);
+                    while($row = mysqli_fetch_assoc($result)){ ?>
+                      <tr>
+                      <td class="text-center"><?php echo $row['nombre_producto']; ?></td>
+                      <td class="text-center"><?php if($row['stock'] == 0){
+                        echo '<span class="badge badge-danger">0</span>';
+                      }elseif ($row['stock'] >= 1 && $row['stock'] <= 20){
+                        echo '<span class="badge badge-warning">' . $row['stock'] . '</span>';
+                      }else{
+                        echo '<span class="badge badge-success">' . $row['stock'] . '</span>';
+                      } ?></td>
+                    </tr>
+                  <?php } 
+                  mysqli_free_result($result); ?>
+                     
+                    </tbody>
+                  </table>
+                </div>
+                <!-- /.table-responsive -->
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer clearfix text-center">
+                <a href="productos.php">Ver todos los productos</a>
+              </div>
+              <!-- /.card-footer -->
+            </div>
+            <!-- /.card -->
           </section>
           <!-- right col -->
         </div>
@@ -272,7 +326,7 @@
     </div>
   </footer>
 
-  <!-- Control Sidebar -->
+  <!-- Control Sidebar # Can be deleted -->
   <aside class="control-sidebar control-sidebar-dark">
     <!-- Control sidebar content goes here -->
   </aside>
@@ -281,5 +335,37 @@
 <!-- ./wrapper -->
 
 <?php require 'footer.php'; ?>
+
+<?php  $arr2 = [date('F', strtotime('- 5 months')), date('F', strtotime('- 4 months')), date('F', strtotime('- 3 months')), date('F', strtotime('- 2 months')), date('F', strtotime('- 1 month')), date('F')];
+ ?>
+  <script>
+    var lbl = <?php echo json_encode($lbl);?>;
+    var datas = <?php echo json_encode($data);?>;
+    var ctx = document.getElementById('sales-chart').getContext('2d');
+    var chart = new Chart(ctx, {
+      type: 'bar',
+
+      // Data 
+      data: {
+        labels: lbl,
+        datasets: [{
+          label: 'Promedio ventas últimos 5 meses',  // Junto al badge de color
+          backgroundColor: 'rgb(0, 99, 132)',   // Color del tipo de gráfico
+          borderColor: 'rgb(0, 99, 132)',  // Supongo que lo mismo xd 
+          data: [5, 10, 15, 20, 25]  // Valores que va a mostrar el chart --> Solo acepta números (CREO)
+        }]
+      },
+
+      options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true  // Arrancar el chart desde 0
+                }
+            }]
+        }
+      }
+    });
+  </script>
 </body>
 </html>

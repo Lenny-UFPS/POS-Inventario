@@ -1,14 +1,25 @@
 <?php require 'conexion.php';
 
-$stmt = $mysqli->prepare("INSERT INTO clientes (tipo_documento, num_documento, nombre, email, telefono, tipo_cliente) VALUES (?, ?, ?, ?, ?, ?)");
-$stmt->bind_param("sissss", $tipo_documento, $num_documento, $nombre, $email, $telefono, $tipo_cliente);
-
 $var1 = $_POST['doctype'];
 $var2 = (int)$_POST['docnum'];
 $var3 = $_POST['nombre'];
 $var4 = $_POST['email'];
 $var5 = $_POST['telefono'];
 $var6 = $_POST['tipo_cliente'];
+
+$result = $mysqli->query("SELECT COUNT(*) as total FROM clientes WHERE num_documento='{$var2}' OR nombre='{$var3}' OR email='{$var4}'");
+$row = mysqli_fetch_assoc($result);
+$num_rows = $row['total'];
+
+if($num_rows != 0){
+	mysqli_free_result($result);
+	$_SESSION['message'] = "El cliente ya se encuentra registrado";
+	$_SESSION['type-message'] = "danger";
+	header("Location: ../clientes.php");
+}
+
+$stmt = $mysqli->prepare("INSERT INTO clientes (tipo_documento, num_documento, nombre, email, telefono, tipo_cliente) VALUES (?, ?, ?, ?, ?, ?)");
+$stmt->bind_param("sissss", $tipo_documento, $num_documento, $nombre, $email, $telefono, $tipo_cliente);
 
 $tipo_documento = mysqli_real_escape_string($mysqli, $var1);
 $num_documento = mysqli_real_escape_string($mysqli, $var2);

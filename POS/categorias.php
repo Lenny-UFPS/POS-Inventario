@@ -1,9 +1,6 @@
 <?php require 'header.php'; ?>
 <body class="hold-transition sidebar-mini layout-fixed">
-  <?php 
-  # if(!isset($_SESSION['name']) || empty($_SESSION['name'])) header("Location: login.php");
-   ?>
-  }
+  <?php # if(!isset($_SESSION['username'])) header("Location: login.php"); ?>
 <div class="wrapper">
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -19,53 +16,50 @@
         <a href="contact.html" class="nav-link">Contact</a>
       </li>
     </ul>
-
     <?php 
-    	$query = "SELECT nombre_producto FROM productos WHERE stock <= 20";
-    	$result = $mysqli->query($query);
-    	$rows = mysqli_num_rows($result);
+      $result = $mysqli->query("SELECT id FROM productos WHERE stock <= 20");
+      $rows = mysqli_num_rows($result);
+      mysqli_free_result($result);
      ?>
-
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
+      <!-- Notifications Dropdown Menu -->
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
           <i class="far fa-bell"></i>
-          <span class="badge badge-warning navbar-badge"><?php echo $rows ?></span>
+          <span class="badge badge-warning navbar-badge"><?php echo $rows?></span>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+          <span class="dropdown-item dropdown-header">Notificaciones</span>
+          <div class="dropdown-divider"></div>
           <?php if($rows > 0) { ?>
-			<span class="dropdown-item dropdown-header">Notificaciones</span>
-	        <div class="dropdown-divider"></div>
-	        <a href="notifications.php?id=<?php echo $rows?>" class="dropdown-item">
-	        	<i class="fas fa-exclamation-triangle mr-2"></i> Productos que requieren atención
-	        </a>
-	        <div class="dropdown-divider"></div>
-	        <a href="notifications.php?id=<?php echo $rows?>" class="dropdown-item dropdown-footer">Ver todo</a>
-          <?php } else { ?>
-          	<span class="dropdown-item dropdown-header">Notificaciones</span>
-          	<div class="dropdown-divider"></div>
-          	<a href="#" class="dropdown-item">
-          	 	<img src="dist/img/notifications.png" alt="Empty notifications" class="ml-5">
-          	</a>
+            <a href="notifications.php" class="dropdown-item">
+              <i class="fas fa-exclamation-circle mr-2"></i> Productos con baja existencia
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="notifications.php" class="dropdown-item dropdown-footer">Ver todo</a>
+          <?php }else { ?>
+            <a href="#" class="dropdown-item text-center">
+              <img src="dist/img/notifications.png" alt="Empty notifications">
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item dropdown-footer">Ver todo</a>
           <?php } ?>
         </div>
       </li>
       <li class="nav-item">
-       <!-- <a class="nav-link"> -->
-          <form action="php/logout.php" method="post" class="nav-link">
-          	<button type="submit" class="btn btn-sm btn-default">
-	          	Salir
-	          	<i class="fas fa-sign-out-alt nav-icon ml-1"></i>
-	          </button>
-          </form>
-        <!-- </a> -->
+        <form action="php/logout.php" class="nav-link">
+          <button class="btn btn-default btn-sm">
+            Cerrar sesión
+            <i class="fas fa-sign-out-alt pull-right ml-1"></i>
+          </button>
+        </form>
       </li>
     </ul>
   </nav>
   <!-- /.navbar -->
 
-<?php require 'sidebar.php'; ?>
+  <?php require 'sidebar.php'; ?>
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -112,7 +106,6 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        
         <table class="table table-bordered table-striped" id="myTable">
           <thead>
             <tr>
@@ -145,19 +138,20 @@
            <?php } ?>
           </tbody>
         </table>
+        <!-- ./ Table  -->
       </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
   <footer class="main-footer">
-    <strong>Copyright &copy; <script>document.write(new Date().getFullYear());</script><a href="#"> Lenny</a>.</strong>
+    <strong>Copyright &copy <script type="text/javascript">document.write(new Date().getFullYear())</script><a href="#" target="_blank"> Lenny</a>.</strong>
     <div class="float-right d-none d-sm-inline-block">
       <b>Web developer</b>
     </div>
   </footer>
 
-  <!-- Control Sidebar -->
+  <!-- Control Sidebar # Can be deleted -->
   <aside class="control-sidebar control-sidebar-dark">
     <!-- Control sidebar content goes here -->
   </aside>
@@ -171,11 +165,12 @@
 <div class="modal fade" id="modalCategoria" tabindex="-1" role="dialog" aria-labelledby="modalCategoriaLabel"aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
+      <div class="modal-header bg-light">
+        <h5 class="modal-title">Agregar nueva categoría</h5>
+      </div>
+
       <div class="modal-body">
         <div class="card">
-          <div class="card-header bg-info">
-            <h5 class="modal-title">Agregar nueva categoría</h5>
-          </div>
           <div class="card-body login-card-body">
             <form action="php/nueva-categoria.php" method="post" id="new">
               <div class="input-group mb-3">
@@ -190,6 +185,7 @@
           </div>
         </div>
       </div>
+      
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
         <button type="submit" class="btn btn-primary" form="new">Agregar</button>
@@ -197,24 +193,25 @@
     </div>
   </div>
 </div>
+<!-- ./ Modal -->
 
 <script>
-	$(document).ready(function(){
-		$('#myTable').DataTable({
-			"processing": true,
-			"lengthMenu": [[5, 10, 25, 50, 100], [5, 10, 25, 50, 100]],
-			"language": {
-				"lengthMenu": "Mostrar _MENU_ registros",
-				"search": "Buscar: ",
-				"paginate": {
-					"first": "Primero",
-					"last": "Último",
-					"next": "Siguiente",
-					"previous": "Anterior"
-				}
-			}
-		});
-	});
+  $(document).ready(function(){
+    $('#myTable').DataTable({
+      "processing": true,
+      "lengthMenu": [[5, 10, 25, 50, 100], [5, 10, 25, 50, 100]],
+      "language": {
+        "lengthMenu": "Mostrar _MENU_ registros",
+        "search": "Buscar: ",
+        "paginate": {
+          "first": "Primero",
+          "last": "Último",
+          "next": "Siguiente",
+          "previous": "Anterior"
+        }
+      }
+    });
+  });
 </script>
 </body>
 </html>

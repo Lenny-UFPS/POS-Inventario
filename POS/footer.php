@@ -30,3 +30,5 @@
 <script src="dist/js/adminlte.js"></script>
 <!-- Datatables js -->
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.js"></script>
+<!-- SweetAlert js -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
