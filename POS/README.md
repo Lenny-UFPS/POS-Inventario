@@ -36,6 +36,10 @@ Screenshots
 
 ![Screenshot_13](https://user-images.githubusercontent.com/49742928/79493841-aaec3080-7fe7-11ea-9bcc-51c3faff828d.png)
 
+### Registro de cliente - Formulario
+
+![Screenshot_14](https://user-images.githubusercontent.com/49742928/79518865-bd7e5e00-8017-11ea-8e88-203b681358c8.png)
+
 Tecnologías
 -----------
 
