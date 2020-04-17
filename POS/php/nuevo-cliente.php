@@ -1,7 +1,7 @@
 <?php require 'conexion.php';
 
 $var1 = $_POST['doctype'];
-$var2 = (int)$_POST['docnum'];
+$var2 = $_POST['docnum'];
 $var3 = $_POST['nombre'];
 $var4 = $_POST['email'];
 $var5 = $_POST['telefono'];
@@ -16,22 +16,24 @@ if($num_rows != 0){
 	$_SESSION['message'] = "El cliente ya se encuentra registrado";
 	$_SESSION['type-message'] = "danger";
 	header("Location: ../clientes.php");
+}else{
+	$stmt = $mysqli->prepare("INSERT INTO clientes (tipo_documento, num_documento, nombre, email, telefono, tipo_cliente) VALUES (?, ?, ?, ?, ?, ?)");
+	$stmt->bind_param("ssssss", $tipo_documento, $num_documento, $nombre, $email, $telefono, $tipo_cliente);
+
+	$tipo_documento = mysqli_real_escape_string($mysqli, $var1);
+	$num_documento = mysqli_real_escape_string($mysqli, $var2);
+	$nombre = mysqli_real_escape_string($mysqli, $var3);
+	$email = mysqli_real_escape_string($mysqli, $var4);
+	$telefono = mysqli_real_escape_string($mysqli, $var5);
+	$tipo_cliente = mysqli_real_escape_string($mysqli, $var6);
+
+	$stmt->execute();
+
+	$_SESSION['message'] = "Cliente agregado exitosamente.";
+	$_SESSION['type-message'] = "success";
+	header("Location: ../clientes.php");
 }
 
-$stmt = $mysqli->prepare("INSERT INTO clientes (tipo_documento, num_documento, nombre, email, telefono, tipo_cliente) VALUES (?, ?, ?, ?, ?, ?)");
-$stmt->bind_param("sissss", $tipo_documento, $num_documento, $nombre, $email, $telefono, $tipo_cliente);
 
-$tipo_documento = mysqli_real_escape_string($mysqli, $var1);
-$num_documento = mysqli_real_escape_string($mysqli, $var2);
-$nombre = mysqli_real_escape_string($mysqli, $var3);
-$email = mysqli_real_escape_string($mysqli, $var4);
-$telefono = mysqli_real_escape_string($mysqli, $var5);
-$tipo_cliente = mysqli_real_escape_string($mysqli, $var6);
-
-$stmt->execute();
-
-$_SESSION['message'] = "Cliente agregado exitosamente.";
-$_SESSION['type-message'] = "success";
-header("Location: ../clientes.php");
 # Done ...
  ?>

@@ -64,22 +64,9 @@
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <div class="container-fluid">
-      <?php if(isset($_SESSION['message'])) { 
-        $message = $_SESSION['message'];
-        $type = $_SESSION['type-message'];
-        echo "<div class='alert alert-{$type} alert-dismissible fade show' role='alert'>
-        {$message}
-        <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-          <span aria-hidden='true'>&times;</span>
-        </button>
-        </div>";
-
-        unset($_SESSION['message']);
-        unset($_SESSION['type-message']);
-      } ?>
       <div class="row mb-2 mt-3">
           <div class="col-12">
-            <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#modalCategoria">
+            <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#modalUsuario">
               Agregar usuario
             </button>
           </div>
@@ -132,12 +119,12 @@
                <td><?php echo $row['telefono']?></td>
                <td><?php echo $row['direccion']?></td>
                <td>
-                 <form action="php/borrar-usuario.php?id=<?php echo $row['id']?>" method="post">
+                 <form>
                     <a href="editar-usuario.php?id=<?php echo $row['id']?>" class="btn btn-warning mr-1">
                       <i class="fas fa-edit nav-icon"></i>
                     </a>
 
-                    <button class="btn btn-danger" type="submit">
+                    <button class="btn btn-danger" type="button" onclick="myFunction(<?php echo $row['id']?>)">
                       <i class="fas fa-trash-alt nav-icon"></i>
                     </button>
                  </form>
@@ -152,7 +139,7 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-  <footer class="main-footer">
+  <footer class="main-footer mt-3">
     <strong>Copyright &copy <script type="text/javascript">document.write(new Date().getFullYear())</script><a href="#" target="_blank"> Lenny</a>.</strong>
     <div class="float-right d-none d-sm-inline-block">
       <b>Web developer</b>
@@ -169,37 +156,147 @@
 
 <?php require 'footer.php'; ?>
 
+<script>
+    // swal("Good job!", "You clicked the button!", "success");
+    function myFunction(id){
+      swal({
+        title: "¿Desea eliminar este registro?",
+        icon: "error",
+        buttons: true,
+        dangerMode: true,
+        buttons: ["Cancelar", "Si, eliminar"],
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+          location.href = "php/borrar-usuario.php?id="+id;
+        } else {
+          swal("Operación cancelada", {
+            icon: "success",
+          });
+        }
+      });
+    }
+  </script>
+
 <!-- Modal -->
-<div class="modal fade" id="modalCategoria" tabindex="-1" role="dialog" aria-labelledby="modalCategoriaLabel"aria-hidden="true">
+<div class="modal fade" id="modalUsuario" tabindex="-1" role="dialog" aria-labelledby="modalUsuarioLabel" 
+  aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <div class="modal-body">
+      <div class="modal-body bg-light">
         <div class="card">
-          <div class="card-header bg-info">
-            <h5 class="modal-title">Agregar nueva categoría</h5>
-          </div>
-          <div class="card-body login-card-body">
-            <form action="php/nueva-categoria.php" method="post" id="new">
-              <div class="input-group mb-3">
-                <input type="input" class="form-control" placeholder="Nombre" required="required" name="nombre">
-                <div class="input-group-append">
-                  <div class="input-group-text">
-                    <span class="fas fa-th-list"></span>
+          <div class="card-body login-card-body bg-light">
+            <form action="php/nuevo-usuario.php" method="post">
+              <!-- <div class="form-group"> -->
+                <p class="login-box-msg">Información personal</p>
+                <div class="input-group mb-3">
+                  <input type="text" class="form-control" placeholder="Nombre" name="nombre" required="required">
+                  <div class="input-group-append">
+                    <div class="input-group-text">
+                      <span class="fas fa-user"></span>
+                    </div>
                   </div>
                 </div>
+
+                <div class="form-group mb-3">
+                  <label for="">Tipo de documento</label>
+                  <select name="doctype" required="required" class="form-control">
+                    <option value="cedula de ciudadania" selected>Cédula de ciudadanía</option>
+                    <option value="cedula de extranjeria">Cédula de extranjería</option>
+                  </select>
+                </div>
+
+                <div class="input-group mb-3">
+                  <input type="text" class="form-control" placeholder="Número de documento" name="docnum" required="required" onkeypress="return event.charCode >= 48 && event.charCode <= 57" maxlength="10">
+                  <div class="input-group-append">
+                    <div class="input-group-text">
+                      <span class="fas fa-hashtag"></span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="dropdown-divider mb-3"></div>
+
+                <p class="login-box-msg">Información de contacto</p>
+
+                <div class="input-group mb-3">
+                  <input type="email" class="form-control" placeholder="Correo electrónico" name="email" required="required">
+                  <div class="input-group-append">
+                    <div class="input-group-text">
+                      <span class="fas fa-envelope"></span>
+                    </div>
+                  </div>
+                </div>
+
+              <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Teléfono" name="telefono" required="required" onkeypress="return event.charCode >= 48 && event.charCode <= 57" maxlength="10">
+                <div class="input-group-append">
+                  <div class="input-group-text">
+                    <span class="fas fa-phone"></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Dirección" name="direccion" required="required"maxlength="100">
+                <div class="input-group-append">
+                  <div class="input-group-text">
+                    <span class="fas fa-map-marker-alt"></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="dropdown-divider mb-3"></div>
+
+              <p class="login-box-msg">Datos de sesión</p>
+
+              <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Usuario" name="username" required="required" maxlength="30">
+                <div class="input-group-append">
+                  <div class="input-group-text">
+                    <span class="fas fa-user"></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="input-group mb-3" id="show_hide_password">
+                <input type="password" class="form-control" placeholder="Contraseña" name="password" required="required">
+                <div class="input-group-append">
+                  <div class="input-group-text">
+                    <a href="" style="color: #333"><i class="far fa-eye-slash" aria-hidden="true"></i></a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row float-right">
+                <button type="button" class="btn btn-default mt-3 mr-3" data-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary mt-3">Agregar</button>
               </div>
             </form>
           </div>
         </div>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-        <button type="submit" class="btn btn-primary" form="new">Agregar</button>
-      </div>
     </div>
   </div>
 </div>
 <!-- ./ Modal -->
+
+<script>
+  $(document).ready(function() {
+    $("#show_hide_password a").on('click', function(event) {
+        event.preventDefault();
+        if($('#show_hide_password input').attr("type") == "text"){
+            $('#show_hide_password input').attr('type', 'password');
+            $('#show_hide_password i').addClass( "fa-eye-slash" );
+            $('#show_hide_password i').removeClass( "fa-eye" );
+        }else if($('#show_hide_password input').attr("type") == "password"){
+            $('#show_hide_password input').attr('type', 'text');
+            $('#show_hide_password i').removeClass( "fa-eye-slash" );
+            $('#show_hide_password i').addClass( "fa-eye" );
+        }
+    });
+});
+</script>
 
 <script>
   $(document).ready(function(){

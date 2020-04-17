@@ -64,19 +64,6 @@
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <div class="container-fluid">
-      <?php if(isset($_SESSION['message'])) { 
-        $message = $_SESSION['message'];
-        $type = $_SESSION['type-message'];
-        echo "<div class='alert alert-{$type} alert-dismissible fade show' role='alert'>
-        {$message}
-        <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-          <span aria-hidden='true'>&times;</span>
-        </button>
-        </div>";
-
-        unset($_SESSION['message']);
-        unset($_SESSION['type-message']);
-      } ?>
       <div class="row mb-2 mt-3">
           <div class="col-12">
             <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#modalCategoria">
@@ -124,12 +111,12 @@
                <td><?php echo $row['id']?></td>
                <td><?php echo $row['nombre_categoria']?></td>
                <td>
-                 <form action="php/borrar-categoria.php?id=<?php echo $row['id']?>" method="post">
+                 <form>
                     <a href="editar-categoria.php?id=<?php echo $row['id']?>" class="btn btn-warning mr-1">
                       <i class="fas fa-edit nav-icon"></i>
                     </a>
 
-                    <button class="btn btn-danger" type="submit">
+                    <button class="btn btn-danger" type="button" onclick="myFunction(<?php echo $row['id']?>)">
                       <i class="fas fa-trash-alt nav-icon"></i>
                     </button>
                  </form>
@@ -144,7 +131,7 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-  <footer class="main-footer">
+  <footer class="main-footer mt-3">
     <strong>Copyright &copy <script type="text/javascript">document.write(new Date().getFullYear())</script><a href="#" target="_blank"> Lenny</a>.</strong>
     <div class="float-right d-none d-sm-inline-block">
       <b>Web developer</b>
@@ -161,34 +148,75 @@
 
 <?php require 'footer.php'; ?>
 
+<?php 
+
+    if(isset($_SESSION['message'])){
+      if(strcmp($_SESSION['type-message'], "danger") == 0) { ?>
+        <script>
+          var message = <?php echo json_encode($_SESSION['message']);?>;
+          swal(message, "", "error");
+        </script>
+      <?php } else { ?>
+        <script>
+        var message = <?php echo json_encode($_SESSION["message"]);?>;
+        swal(message, "", "success");
+      </script>
+      <?php }
+          }
+        unset($_SESSION['message']);
+        unset($_SESSION['type-message']); 
+        ?>
+
+<script>
+    // swal("Good job!", "You clicked the button!", "success");
+    function myFunction(id){
+      swal({
+        title: "¿Desea eliminar este registro?",
+        icon: "error",
+        buttons: true,
+        dangerMode: true,
+        buttons: ["Cancelar", "Si, eliminar"],
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+          location.href = "php/borrar-categoria.php?id="+id;
+        } else {
+          swal("Operación cancelada", {
+            icon: "success",
+          });
+        }
+      });
+    }
+  </script>
+
 <!-- Modal -->
 <div class="modal fade" id="modalCategoria" tabindex="-1" role="dialog" aria-labelledby="modalCategoriaLabel"aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <div class="modal-header bg-light">
-        <h5 class="modal-title">Agregar nueva categoría</h5>
-      </div>
-
-      <div class="modal-body">
+      <div class="modal-body bg-light">
         <div class="card">
-          <div class="card-body login-card-body">
+          <div class="card-body login-card-body bg-light">
             <form action="php/nueva-categoria.php" method="post" id="new">
-              <div class="input-group mb-3">
-                <input type="input" class="form-control" placeholder="Nombre" required="required" name="nombre">
-                <div class="input-group-append">
-                  <div class="input-group-text">
+              <p class="login-box-msg">Nueva categoría</p>
+              <div class="form-group mb-3">
+                <label for="">Categoría</label>
+                <div class="input-group">
+                  <input type="input" class="form-control" required="required" name="nombre">
+                  <div class="input-group-append">
+                    <div class="input-group-text">
                     <span class="fas fa-th-list"></span>
+                   </div>
                   </div>
                 </div>
+              </div>
+
+              <div class="row float-right">
+                <button type="button" class="btn btn-default mt-3 mr-3" data-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary mt-3">Agregar</button>
               </div>
             </form>
           </div>
         </div>
-      </div>
-      
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-        <button type="submit" class="btn btn-primary" form="new">Agregar</button>
       </div>
     </div>
   </div>

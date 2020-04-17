@@ -65,22 +65,9 @@
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <div class="container-fluid">
-      <?php /*if(isset($_SESSION['message'])) { 
-        $message = $_SESSION['message'];
-        $type = $_SESSION['type-message'];
-        echo "<div class='alert alert-{$type} alert-dismissible fade show' role='alert'>
-        {$message}
-        <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-          <span aria-hidden='true'>&times;</span>
-        </button>
-        </div>";
-
-        unset($_SESSION['message']);
-        unset($_SESSION['type-message']);
-      } */ ?>
       <div class="row mb-2 mt-3">
           <div class="col-12">
-            <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#modalCategoria">
+            <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#modalClientes">
               Agregar cliente
             </button>
           </div>
@@ -151,7 +138,7 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-  <footer class="main-footer">
+  <footer class="main-footer mt-3">
     <strong>Copyright &copy <script type="text/javascript">document.write(new Date().getFullYear())</script><a href="#" target="_blank"> Lenny</a>.</strong>
     <div class="float-right d-none d-sm-inline-block">
       <b>Web developer</b>
@@ -173,7 +160,7 @@
     if(isset($_SESSION['message'])){
       if(strcmp($_SESSION['type-message'], "danger") == 0) { ?>
         <script>
-          var message = <?php json_encode($_SESSION['message']);?>;
+          var message = <?php echo json_encode($_SESSION['message']);?>;
           swal(message, "", "error");
         </script>
       <?php } else { ?>
@@ -210,14 +197,14 @@
   </script>
 
 <!-- Modal -->
-<div class="modal fade" id="modalCategoria" tabindex="-1" role="dialog" aria-labelledby="modalCategoriaLabel"aria-hidden="true">
+<div class="modal fade" id="modalClientes" tabindex="-1" role="dialog" aria-labelledby="modalClientesLabel"aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-body bg-light">
         <div class="card">
           <div class="card-body login-card-body bg-light">
-            <form action="php/nuevo-cliente.php" method="post" id="new">
-              <div class="form-group">
+            <form action="php/nuevo-cliente.php" method="post">
+              <!-- <div class="form-group"> -->
                 <p class="login-box-msg">Información personal</p>
                 <div class="input-group mb-3">
                   <input type="text" class="form-control" placeholder="Nombre" name="nombre" required="required">
@@ -279,7 +266,7 @@
 
               <div class="row float-right">
                 <button type="button" class="btn btn-default mt-3 mr-3" data-dismiss="modal">Cancelar</button>
-                <button type="submit" class="btn btn-primary mt-3" form="new">Agregar</button>
+                <button type="submit" class="btn btn-primary mt-3">Agregar</button>
               </div>
             </form>
           </div>

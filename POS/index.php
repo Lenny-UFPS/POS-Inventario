@@ -319,7 +319,7 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-  <footer class="main-footer">
+  <footer class="main-footer mt-3">
     <strong>Copyright &copy <script type="text/javascript">document.write(new Date().getFullYear())</script><a href="#" target="_blank"> Lenny</a>.</strong>
     <div class="float-right d-none d-sm-inline-block">
       <b>Web developer</b>
@@ -336,8 +336,6 @@
 
 <?php require 'footer.php'; ?>
 
-<?php  $arr2 = [date('F', strtotime('- 5 months')), date('F', strtotime('- 4 months')), date('F', strtotime('- 3 months')), date('F', strtotime('- 2 months')), date('F', strtotime('- 1 month')), date('F')];
- ?>
   <script>
     var lbl = <?php echo json_encode($lbl);?>;
     var datas = <?php echo json_encode($data);?>;
@@ -352,7 +350,7 @@
           label: 'Promedio ventas últimos 5 meses',  // Junto al badge de color
           backgroundColor: 'rgb(0, 99, 132)',   // Color del tipo de gráfico
           borderColor: 'rgb(0, 99, 132)',  // Supongo que lo mismo xd 
-          data: [5, 10, 15, 20, 25]  // Valores que va a mostrar el chart --> Solo acepta números (CREO)
+          data: datas  // Valores que va a mostrar el chart --> Solo acepta números (CREO)
         }]
       },
 
