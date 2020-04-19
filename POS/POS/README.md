@@ -12,6 +12,14 @@ Screenshots
 
 ![Screenshot_7](https://user-images.githubusercontent.com/49742928/79493685-74161a80-7fe7-11ea-8c7c-8000af2e68e4.png)
 
+### New Sidebar | Menú para compras y ventas - lista desplegable
+
+![Screenshot_17](https://user-images.githubusercontent.com/49742928/79701536-8d2aff80-8263-11ea-9c2f-775df9c757ec.png)
+
+### Registro de venta | Factura + lista de productos
+
+![Screenshot_18](https://user-images.githubusercontent.com/49742928/79701592-f14dc380-8263-11ea-924b-4203aaaab095.png)
+
 ### Categorías
 
 ![Screenshot_8](https://user-images.githubusercontent.com/49742928/79493710-7d06ec00-7fe7-11ea-8a07-a87de241292f.png)
