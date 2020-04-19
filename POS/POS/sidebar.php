@@ -47,12 +47,31 @@
           	</a>
           </li>
 
-          <li class="nav-item">
-            <a href="compras.php" class="nav-link">
-              <i class="fas fa-cubes nav-icon"></i>
-              <p>Compras</p>
+          <!-- Menú compras -->
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-cubes nav-icon"></i>
+              <p>
+                Compras
+                <i class="right fas fa-angle-left"></i>
+              </p>
             </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="compras.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Administrar compras</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="registrar-compra.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Generar compra</p>
+                </a>
+              </li>
+            </ul>
           </li>
+          <!-- ./ Menú compras -->
 
           <li class="nav-item">
           	<a href="kardex.php" class="nav-link">
@@ -82,12 +101,31 @@
           	</a>
           </li>
 
-          <li class="nav-item">
-            <a href="ventas.php" class="nav-link">
-              <i class="fas fa-list nav-icon"></i>
-              <p>Ventas</p>
+          <!-- Menú ventas -->
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-list nav-icon"></i>
+              <p>
+                Ventas
+                <i class="right fas fa-angle-left"></i>
+              </p>
             </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="ventas.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Administrar ventas</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="registrar-venta.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Generar venta</p>
+                </a>
+              </li>
+            </ul>
           </li>
+          <!-- ./ Menú ventas -->
 
           <li class="nav-header">EXTRAS</li>
 		  <!-- Menú reportes -->

@@ -1,4 +1,34 @@
 <?php require 'header.php'; ?>
+
+<?php 
+
+$producto = "";
+$var2 = "Categoria 1";
+$var3 = 1000;
+$var4 = 2000;
+$cod = "";
+
+for($i = 1; $i <= 20; $i++){
+  $producto = "Producto " . $i;
+  if($i > 9) $cod = "1" . $i;
+  else $cod = "10" . $i;
+  $stmt = $mysqli->prepare("INSERT INTO productos (cod_producto, nombre_producto, nombre_categoria, precio_compra, precio_venta) VALUES (?, ?, ?, ?, ?)");
+  $stmt->bind_param("issii", $cod_producto, $nombre_producto, $nombre_categoria, $precio_compra, $precio_venta);
+
+  $nombre_producto = mysqli_real_escape_string($mysqli, $producto);
+  $cod_producto = mysqli_real_escape_string($mysqli, (int)$cod);
+  $nombre_categoria = mysqli_real_escape_string($mysqli, $var2);
+  $precio_compra = mysqli_real_escape_string($mysqli, $var3 * $i);
+  $precio_venta = mysqli_real_escape_string($mysqli, $var4 * $i);
+
+  $stmt->execute();
+
+}
+
+echo "Listo hpta";
+ ?>
+
+<?php /* 
 <body class="hold-transition login-page">
   <div class="login-box">
     <div class="login-logo">
@@ -91,3 +121,13 @@
             </div>
             <!-- /.card --> */
  ?>
+<?php /* <script>
+  $('.sendButton').click(function(){
+    var nombre = $('.sendButton').attr('data-name');
+    var precio_venta = $('.sendButton').attr('data-price');
+    var stock = $('.sendButton').attr('data-stock');
+    alert(nombre);
+    alert(precio_venta);
+    alert(stock);
+  });
+</script>  */ ?>
